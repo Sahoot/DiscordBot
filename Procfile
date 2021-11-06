@@ -1,0 +1,1 @@
+worker: sahootbot SahootihootBot.py
