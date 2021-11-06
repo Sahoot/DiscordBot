@@ -1,1 +1,1 @@
-worker: sahootbot SahootihootBot.py
+worker: python SahootihootBot.py
