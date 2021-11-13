@@ -1,31 +1,22 @@
 import os
-
+from pathlib import Path
 import discord
+from discord.ext import commands
 from dotenv import load_dotenv
+import random
 
-
+#getting bot token from env file
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-client = discord.Client()
+bot = commands.Bot(command_prefix='~', description='This is an inside joke bot')
 
-bro = {'bruh', 'bro', 'breh', 'bruv'}
+@bot.command()
+async def test(ctx):
+    await ctx.send('osterone')
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'{client.user} has connected to Discord!')
+    print('ready bot go')
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-    
-    if message.content == '~help':
-        await message.channel.send('chup!')
-    
-    for x in bro:
-        if x.lower() in message.content.lower():
-            await message.channel.send('bruh')
-            break
-
-client.run(TOKEN)
+bot.run(TOKEN)
