@@ -17,6 +17,10 @@ async def test(ctx):
     await ctx.send('osterone')
 
 @bot.command()
+async def clean(ctx):
+    await ctx.send('sab kam mehi karu?')
+
+@bot.command()
 async def quote(ctx):
    quote_file = open('quotes.txt', 'r') 
    quotes = quote_file.read().split(',')
@@ -25,9 +29,14 @@ async def quote(ctx):
    else:
        await ctx.send(quotes[random.randint(0, len(quotes)-1)])
 
-# @bot.command()
-# async def clean_quotes(ctx):
-#     await ctx.send('sab kam mehi karu?')
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    bruh_file = open('bruh.txt', 'r')
+    bruh_list = bruh_file.read().split(',')
+    if any(ext in message.content for ext in bruh_list):
+        await message.channel.send('bruh')
 
 @bot.event
 async def on_ready():
