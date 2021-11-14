@@ -32,6 +32,7 @@ async def quote(ctx):
 
 @bot.event
 async def on_message(message):
+    await bot.process_commands(message)
     if message.author == bot.user:
         return
     bruh_file = open('bruh.txt', 'r')
