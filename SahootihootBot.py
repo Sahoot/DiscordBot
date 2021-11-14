@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import discord
 from discord.ext import commands
-from discord.ext import has_permissions
+#from discord.ext import has_permissions
 from dotenv import load_dotenv
 import random
 
