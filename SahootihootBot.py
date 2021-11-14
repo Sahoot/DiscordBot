@@ -24,6 +24,7 @@ async def clean(ctx):
 async def quote(ctx):
    quote_file = open('quotes.txt', 'r') 
    quotes = quote_file.read().split(',')
+   quote_file.close()
    if len(quotes) < 1:
        await ctx.send('nothing here :(')
    else:
@@ -35,6 +36,7 @@ async def on_message(message):
         return
     bruh_file = open('bruh.txt', 'r')
     bruh_list = bruh_file.read().split(',')
+    bruh_file.close()
     if any(ext in message.content for ext in bruh_list):
         await message.channel.send('bruh')
 
