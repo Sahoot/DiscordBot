@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix='~', description='This is an inside joke bot')
 async def test(ctx):
     await ctx.send('osterone')
 
-@bot.command(breif='gives a famous quote')
+@bot.command(brief='gives a famous quote')
 async def quote(ctx):
    quote_file = open('quotes.txt', 'r') 
    quotes = quote_file.read().split('\n')
