@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 import discord
 from discord.ext import commands
+from discord.utils import get
+from discord import FFmpegPCMAudio
+from youtube_dl import YoutubeDL
 #from discord.ext import has_permissions
 from dotenv import load_dotenv
 import random
@@ -30,6 +33,24 @@ async def quote(ctx):
    else:
        await ctx.send(quotes[random.randint(0, len(quotes)-1)])
 
+@bot.command()
+async def join(ctx):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+
+@bot.command()
+async def youtube(ctx, url):
+    YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
+    FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+    voice = get(bot.voice_clients, guild=ctx.guild)
+
+    if not voice.is_playing():
+        with YoutubeDL(YDL_OPTIONS) as ydl:
+            info = ydl.extract_info(url, download=False)
+        URL = info['url']
+        voice.play(FFmpegPCMAudio(URL, **FFMPEG_OPTIONS))
+        voice.is_playing()
+
 @bot.event
 async def on_message(message):
     await bot.process_commands(message)
@@ -39,7 +60,7 @@ async def on_message(message):
     bruh_list = bruh_file.read().split(',')
     bruh_file.close()
     if any(ext in message.content for ext in bruh_list):
-        await message.channel.send('bruh')
+        await message.channel.send('bruh', tts=True)
 
 @bot.event
 async def on_ready():
