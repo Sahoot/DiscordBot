@@ -12,28 +12,30 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = commands.Bot(command_prefix='~', description='This is an inside joke bot')
 
-@bot.command()
+@bot.command(brief='finishes the word')
 async def test(ctx):
     await ctx.send('osterone')
 
-@bot.command()
-async def clean(ctx):
-    await ctx.send('sab kam mehi karu?')
-
-@bot.command()
+@bot.command(breif='gives a famous quote')
 async def quote(ctx):
    quote_file = open('quotes.txt', 'r') 
-   quotes = quote_file.read().split(',')
+   quotes = quote_file.read().split('\n')
    quote_file.close()
    if len(quotes) < 1:
        await ctx.send('nothing here :(')
    else:
-       await ctx.send(quotes[random.randint(0, len(quotes)-1)])
+       await ctx.send(f'***{quotes[random.randint(0, len(quotes)-1)]}***')
 
-@bot.command()
-async def join(ctx):
-    channel = ctx.author.voice.channel
-    await channel.connect()
+@bot.command(brief='adds to the list of famous quotes')
+@commands.has_permissions(administrator=True)
+async def addquote(ctx, quote):
+    if not quote:
+        return
+    quote = ctx.message.content.strip(bot.command_prefix + ctx.invoked_with + ' ')
+    with open("quotes.txt", "a") as quote_file:
+        quote_file.write("\n")
+        quote_file.write(quote)
+    await ctx.send(f'***{quote}*** added to list of quotes')
 
 @bot.event
 async def on_message(message):
@@ -44,7 +46,7 @@ async def on_message(message):
     bruh_list = bruh_file.read().split(',')
     bruh_file.close()
     if any(ext in message.content for ext in bruh_list):
-        await message.channel.send('bruh', tts=True)
+        await message.channel.send('***bruh***', tts=True)
 
 @bot.event
 async def on_ready():
